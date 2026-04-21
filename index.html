@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartMarket</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        #networkCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 2rem;
+            max-width: 900px;
+        }
+
+        .footer-disclaimer {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 1.5rem;
+            z-index: 2;
+            text-align: center;
+            padding: 0 1.25rem;
+            font-size: 0.95rem;
+            color: rgba(44, 44, 44, 0.75);
+            line-height: 1.5;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #0077cc;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #2c2c2c;
+            line-height: 1.6;
+        }
+
+        .cta-row {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.3rem;
+            border-radius: 999px;
+            background: #0077cc;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 650;
+            font-size: 1rem;
+            box-shadow: 0 10px 24px rgba(0, 119, 204, 0.25);
+            transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-1px);
+            background: #0069b4;
+            box-shadow: 0 12px 28px rgba(0, 119, 204, 0.33);
+        }
+
+        .cta-button:focus-visible {
+            outline: 3px solid rgba(0, 119, 204, 0.35);
+            outline-offset: 4px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            .cta-button {
+                width: 100%;
+                max-width: 320px;
+            }
+            .footer-disclaimer {
+                bottom: 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <canvas id="networkCanvas"></canvas>
+        <div class="hero-content">
+            <h1>Welcome to SmartMarket</h1>
+            <p class="subtitle">Where Market Analytics Meets Prediction</p>
+            <div class="cta-row">
+                <a class="cta-button" href="/app.html" aria-label="Get started and open the dashboard">
+                    Get Started
+                </a>
+            </div>
+        </div>
+        <div class="footer-disclaimer">
+            <strong>Disclaimer:</strong> All Analytics and Predictions where made from data collected from Tarkwa Market between the Period of 2025 -12-0 to 2026-03
+        </div>
+    </section>
+
+    <script>
+        const canvas = document.getElementById('networkCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const config = {
+            nodeCount: 40,
+            connectionDistance: 200,
+            nodeSpeed: 0.3,
+            lineColor: 'rgba(200, 200, 200, 0.4)',
+            nodeColor: 'rgba(180, 180, 180, 0.6)',
+            nodeRadius: 3
+        };
+
+        class Node {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * config.nodeSpeed;
+                this.vy = (Math.random() - 0.5) * config.nodeSpeed;
+                this.radius = config.nodeRadius;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) {
+                    this.vx *= -1;
+                    this.x = Math.max(0, Math.min(canvas.width, this.x));
+                }
+                if (this.y < 0 || this.y > canvas.height) {
+                    this.vy *= -1;
+                    this.y = Math.max(0, Math.min(canvas.height, this.y));
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = config.nodeColor;
+                ctx.fill();
+            }
+        }
+
+        const nodes = [];
+        for (let i = 0; i < config.nodeCount; i++) {
+            nodes.push(new Node());
+        }
+
+        function drawConnections() {
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < config.connectionDistance) {
+                        const opacity = (1 - distance / config.connectionDistance) * 0.4;
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(200, 200, 200, ${opacity})`;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            nodes.forEach(node => {
+                node.update();
+                node.draw();
+            });
+
+            drawConnections();
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        let mouseX = -1000;
+        let mouseY = -1000;
+
+        canvas.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            nodes.forEach(node => {
+                const dx = mouseX - node.x;
+                const dy = mouseY - node.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 150) {
+                    const force = (150 - distance) / 150 * 0.02;
+                    node.vx += dx / distance * force;
+                    node.vy += dy / distance * force;
+                }
+            });
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            mouseX = -1000;
+            mouseY = -1000;
+        });
+    </script>
+</body>
+</html>

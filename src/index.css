@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 215 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 15%;
+
+    /* SmartMarket brand blue (#0077cc) */
+    --primary: 205 100% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 20% 95%;
+    --secondary-foreground: 215 25% 15%;
+
+    --muted: 210 15% 93%;
+    --muted-foreground: 215 10% 50%;
+
+    /* Subtle blue-tinted accents derived from brand */
+    --accent: 205 100% 96%;
+    --accent-foreground: 205 100% 28%;
+
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 15% 90%;
+    --input: 210 15% 90%;
+    --ring: 205 100% 40%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 215 15% 40%;
+    --sidebar-primary: 205 100% 40%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 205 100% 96%;
+    --sidebar-accent-foreground: 205 100% 28%;
+    --sidebar-border: 210 15% 92%;
+    --sidebar-ring: 205 100% 40%;
+
+    /* Charts: start with brand blue, then supporting palette */
+    --chart-1: 205 100% 40%;
+    --chart-2: 220 70% 55%;
+    --chart-3: 35 90% 55%;
+    --chart-4: 280 60% 55%;
+    --chart-5: 0 72% 55%;
+
+    --success: 142 60% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 35 90% 55%;
+    --warning-foreground: 0 0% 100%;
+
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .dark {
+    --background: 220 20% 8%;
+    --foreground: 210 20% 95%;
+    --card: 220 20% 12%;
+    --card-foreground: 210 20% 95%;
+    --popover: 220 20% 12%;
+    --popover-foreground: 210 20% 95%;
+    /* SmartMarket brand blue (dark mode tuned) */
+    --primary: 205 100% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 15% 18%;
+    --secondary-foreground: 210 20% 95%;
+    --muted: 220 15% 18%;
+    --muted-foreground: 215 10% 55%;
+    --accent: 205 60% 16%;
+    --accent-foreground: 205 100% 72%;
+    --destructive: 0 62% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 15% 20%;
+    --input: 220 15% 20%;
+    --ring: 205 100% 55%;
+    --sidebar-background: 220 20% 10%;
+    --sidebar-foreground: 210 15% 70%;
+    --sidebar-primary: 205 100% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 205 60% 16%;
+    --sidebar-accent-foreground: 205 100% 72%;
+    --sidebar-border: 220 15% 18%;
+    --sidebar-ring: 205 100% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+}
+
+@layer utilities {
+  .card-shadow {
+    box-shadow: 0 1px 3px 0 hsl(var(--foreground) / 0.04), 0 1px 2px -1px hsl(var(--foreground) / 0.04);
+  }
+  .card-shadow-lg {
+    box-shadow: 0 4px 12px 0 hsl(var(--foreground) / 0.06), 0 2px 4px -2px hsl(var(--foreground) / 0.04);
+  }
+}
