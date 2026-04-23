@@ -85,5 +85,16 @@ export const smartMarketReport = {
     { product: "Fresh Pepper", category: "Perishable", totalUnits: 1909, spoilageRisk: 1 },
     { product: "Tomatoes", category: "Perishable", totalUnits: 1893, spoilageRisk: 1 },
   ] as const,
+  commodityPeakMonths: [
+    { product: "Yam", peakMonths: [1, 2] },
+    { product: "Okra", peakMonths: [3, 4] },
+    { product: "Plantain", peakMonths: [1, 3] },
+    { product: "Cassava", peakMonths: [2, 3] },
+    { product: "Beans", peakMonths: [1, 4] },
+    { product: "Rice", peakMonths: [2] },
+    { product: "Garden Eggs", peakMonths: [3] },
+    { product: "Fresh Pepper", peakMonths: [4] },
+    { product: "Tomatoes", peakMonths: [4] },
+  ] as const,
 } as const;
 

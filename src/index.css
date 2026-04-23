@@ -98,11 +98,54 @@
   * {
     @apply border-border;
   }
+
+  html {
+    font-size: 16px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.04rem;
+    line-height: 1.68;
+    letter-spacing: 0.006em;
+    font-weight: 500;
   }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', sans-serif;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    text-wrap: balance;
+  }
+
+  h1 { font-size: clamp(2rem, 3vw, 2.6rem); }
+  h2 { font-size: clamp(1.55rem, 2.2vw, 2rem); }
+  h3 { font-size: clamp(1.25rem, 1.8vw, 1.55rem); }
+  h4 { font-size: clamp(1.12rem, 1.5vw, 1.3rem); }
+  h5 { font-size: 1.05rem; }
+  h6 { font-size: 1rem; }
+
+  p, li, span, label, input, select, textarea, button {
+    letter-spacing: 0.002em;
+  }
+
+  p, li {
+    line-height: 1.72;
+  }
+
+  button, input, select, textarea {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.98rem;
+    font-weight: 500;
+  }
+
+  ::placeholder {
+    letter-spacing: 0.002em;
   }
 }
 
@@ -112,5 +155,12 @@
   }
   .card-shadow-lg {
     box-shadow: 0 4px 12px 0 hsl(var(--foreground) / 0.06), 0 2px 4px -2px hsl(var(--foreground) / 0.04);
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }

@@ -7,7 +7,6 @@ import {
   Activity,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
-import { useLocation } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -21,17 +20,15 @@ import {
 } from "@/components/ui/sidebar";
 
 const items = [
-  { title: "Dashboard", url: "/", icon: LayoutDashboard },
-  { title: "Forecasting", url: "/forecasting", icon: TrendingUp },
+  { title: "Market Overview", url: "/", icon: LayoutDashboard },
+  { title: "Demand Outlook", url: "/forecasting", icon: TrendingUp },
   { title: "Demand Analysis", url: "/demand-analysis", icon: BarChart3 },
-  { title: "Products", url: "/products", icon: Package },
-  { title: "Predictions", url: "/predictions", icon: Brain },
+  { title: "Stock Planner", url: "/predictions", icon: Brain },
 ];
 
 export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
-  const location = useLocation();
 
   return (
     <Sidebar collapsible="icon">

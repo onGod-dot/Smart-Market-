@@ -18,27 +18,43 @@ function pctDelta(value: number, pct: number) {
   return value * (pct / 100);
 }
 
-// A deterministic 30-day illustrative window following the report's effects.
-export const demandTrendData = Array.from({ length: 30 }, (_, idx) => {
-  const day = idx + 1;
-  const base = approxAvgDailyDemand;
+const trendStartDate = new Date(`${smartMarketReport.dataset.dateRange.start}T00:00:00`);
+const trendDays = smartMarketReport.dataset.uniqueDates;
 
-  const isWeekend = day % 7 === 6 || day % 7 === 0; // illustrative cadence
-  const isPaydayWindow = day >= smartMarketReport.demandDrivers.paydayWindowDays.start && day <= smartMarketReport.demandDrivers.paydayWindowDays.end;
+// Deterministic illustrative window aligned to report date span.
+export const demandTrendData = Array.from({ length: trendDays }, (_, idx) => {
+  const day = idx + 1;
+  const current = new Date(trendStartDate);
+  current.setDate(trendStartDate.getDate() + idx);
+  const dayOfMonth = current.getDate();
+  const weekday = current.getDay(); // 0 Sun, 6 Sat
+  const baselineWave = 1 + Math.sin((day / 32) * Math.PI * 2) * 0.18;
+  const base = approxAvgDailyDemand * baselineWave;
+
+  const isWeekend = weekday === 0 || weekday === 6;
+  const isPaydayWindow =
+    dayOfMonth >= smartMarketReport.demandDrivers.paydayWindowDays.start &&
+    dayOfMonth <= smartMarketReport.demandDrivers.paydayWindowDays.end;
+  const isMarketDayPulse = day % 9 === 0;
 
   let actual = base;
   if (isWeekend) actual += pctDelta(base, smartMarketReport.demandDrivers.findings.weekendLiftPct);
   if (isPaydayWindow) actual += pctDelta(base, smartMarketReport.demandDrivers.findings.paydayLiftPct);
+  if (isMarketDayPulse) actual += pctDelta(base, 8);
 
-  // Models: keep them close to actual but with small, consistent offsets.
-  const arima = Math.round(actual * 0.98);
-  const randomForest = Math.round(actual * 1.01);
+  // Model behavior: RF tracks spikes better; ARIMA is smoother/lagging on extremes.
+  const randomForest = Math.round(actual * (isPaydayWindow || isMarketDayPulse ? 0.995 : 1.01));
+  const arima = Math.round(base * (isPaydayWindow ? 1.18 : isWeekend ? 1.09 : 1.0));
 
   return {
     day: `Day ${day}`,
+    date: current.toISOString().slice(0, 10),
+    dayNumber: day,
     actual: Math.round(actual),
     randomForest,
     arima,
+    isPaydayWindow,
+    isWeekend,
   };
 });
 
